@@ -44,8 +44,8 @@ namespace Emby.Plugin.TelegramNotification
         {
 
             var options = GetOptions(request.User);
-
-            string message = request.Name;
+            string message = Uri.EscapeDataString(request.Name);
+            
 
             _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
 

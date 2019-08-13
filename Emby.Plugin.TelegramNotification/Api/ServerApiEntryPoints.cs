@@ -43,7 +43,7 @@ namespace Emby.Plugin.TelegramNotification.Api
         public async Task PostAsync(TestNotification request)
         {
             var options = GetOptions(request.UserID);
-            string message = "This is a Test";
+            string message = Uri.EscapeDataString("This is a Test");
 
             _logger.Debug("Telegram <TEST> to {0} - {1}", options.BotToken, options.ChatID);
 
