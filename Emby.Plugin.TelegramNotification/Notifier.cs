@@ -44,20 +44,14 @@ namespace Emby.Plugin.TelegramNotification
         {
 
             var options = GetOptions(request.User);
-            string message;
+            string message = Uri.EscapeDataString(request.Name);
 
-            if (string.IsNullOrEmpty(request.Description))
+            if (string.IsNullOrEmpty(request.Description) == false && options.SendDescription == true)
             {
-                message = Uri.EscapeDataString(request.Name);
-            }
-            else
-            {
-                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description);
+                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description); 
             }
 
-             
-
-            _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, message);
+            _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
 
             var _httpRequest = new HttpRequestOptions
             {
