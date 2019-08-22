@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="inputContainer">
-                        <input is="emby-input" type="text" id="txtTeleGramChatID" label="Telegram user key:" required="required" />
+                        <input is="emby-input" type="text" id="txtTeleGramChatID" label="Telegram ChatID key:" required="required" />
                         <div class="fieldDescription">
                             Telegram chat ID, get it from @get_id_bot
                         </div>
@@ -68,9 +68,9 @@
 
                         })[0] || {};
 
-                        $('#chkEnableTeleGram', page).checked(teleGramConfig.Enabled || false).checkboxradio("refresh");
-						$('#chkSendDescriptionTeleGram', page).checked(teleGramConfig.SendDescription || false).checkboxradio("refresh");
-                        $('#txtTeleGramBotKey', page).val(teleGramConfig.BotToken || '');
+						page.querySelector('#chkEnableTeleGram').checked = teleGramConfig.Enabled || false;
+                        page.querySelector('#chkSendDescriptionTeleGram').checked = teleGramConfig.SendDescription || false;
+						$('#txtTeleGramBotKey', page).val(teleGramConfig.BotToken || '');
                         $('#txtTeleGramChatID', page).val(teleGramConfig.ChatID || '');
 
                         Dashboard.hideLoadingMsg();
@@ -131,7 +131,7 @@
 
                             return '<option value="' + user.Id + '">' + user.Name + '</option>';
 
-                        })).selectmenu('refresh').trigger('change');
+                       })).trigger('change');
 
                     });
 
@@ -161,9 +161,9 @@
 
                         teleGramConfig.MediaBrowserUserId = userId;
 
-                        teleGramConfig.Enabled = $('#chkEnableTeleGram', form).checked();
-						teleGramConfig.SendDescription = $('#chkSendDescriptionTeleGram', form).checked();
-                        teleGramConfig.BotToken = $('#txtTeleGramBotKey', form).val();
+                        teleGramConfig.Enabled = form.querySelector('#chkEnableTeleGram').checked;
+						teleGramConfig.SendDescription = form.querySelector('#chkSendDescriptionTeleGram').checked;
+						teleGramConfig.BotToken = $('#txtTeleGramBotKey', form).val();
                         teleGramConfig.ChatID = $('#txtTeleGramChatID', form).val();
 
                         ApiClient.updatePluginConfiguration(pluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
