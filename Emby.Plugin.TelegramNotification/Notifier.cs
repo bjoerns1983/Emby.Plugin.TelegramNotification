@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace Emby.Plugin.TelegramNotification
 {
     public class Notifier : INotificationService
@@ -44,22 +45,34 @@ namespace Emby.Plugin.TelegramNotification
         {
 
             var options = GetOptions(request.User);
-            string message = Uri.EscapeDataString(request.Name);
+
+            var myJson = new Dictionary<string, string>
+                {
+                  {"chat_id", options.ChatID},
+                };
 
             if (string.IsNullOrEmpty(request.Description) == false && options.SendDescription == true)
             {
-                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description); 
+                myJson.Add ("text", Uri.EscapeDataString(request.Name + "\n\n" + request.Description)); 
             }
+            else
+            {
+                myJson.Add ("text", Uri.EscapeDataString(request.Name));
+            }
+
 
             _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
 
-            var _httpRequest = new HttpRequestOptions
+            var httpRequestOptions = new HttpRequestOptions
             {
-                Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + message,
+                Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage",
                 CancellationToken = cancellationToken
             };
+            
 
-            using (await _httpClient.Post(_httpRequest).ConfigureAwait(false))
+            httpRequestOptions.SetPostData(myJson);
+
+            using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
             {
 
             }

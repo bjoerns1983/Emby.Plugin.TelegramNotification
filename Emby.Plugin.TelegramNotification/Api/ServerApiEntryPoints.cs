@@ -43,16 +43,22 @@ namespace Emby.Plugin.TelegramNotification.Api
         public async Task PostAsync(TestNotification request)
         {
             var options = GetOptions(request.UserID);
-            string message = Uri.EscapeDataString("This is a Test");
+            var myJson = new Dictionary<string, string>
+                {
+                  {"chat_id", options.ChatID},
+                  {"text", "This is a Test"},
+                };
+            //string message = Uri.EscapeDataString("This is a Test");
 
             _logger.Debug("Telegram <TEST> to {0} - {1}", options.BotToken, options.ChatID);
 
             var httpRequestOptions = new HttpRequestOptions
             {
-                Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + message,
+                Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage",
                 CancellationToken = CancellationToken.None
             };
 
+            httpRequestOptions.SetPostData(myJson);
 
             using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
             {

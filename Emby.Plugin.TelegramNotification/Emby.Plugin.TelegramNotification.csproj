@@ -2,8 +2,8 @@
 
 <PropertyGroup> 
   <TargetFrameworks>netstandard2.0;</TargetFrameworks> 
-  <AssemblyVersion>1.1.0.0</AssemblyVersion> 
-  <FileVersion>1.1.0.0</FileVersion> 
+  <AssemblyVersion>1.1.1.4</AssemblyVersion> 
+  <FileVersion>1.1.1.4</FileVersion> 
 </PropertyGroup>
 
 <ItemGroup>
@@ -16,10 +16,14 @@
   <EmbeddedResource Include="thumb.png" />
 </ItemGroup>
 
-<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" /> </ItemGroup>
+<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" /> <PackageReference Include="Newtonsoft.Json" Version="12.0.2" /> </ItemGroup>
 
 <ItemGroup>
   <Folder Include="Images\" />
 </ItemGroup>
+
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;D:\emby\embyserver-win-x64-4.2.1.0\programdata\plugins&quot; /y" />
+</Target>
 
 </Project>
