@@ -15,7 +15,7 @@
 ## Screenshots
 Plugin config + Telegram notification examples
 <p align="left">
-  <img src=" https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/screenshots/Screenshot_20210425-194411_r.png" width="300px" alt="Plugin screenshot" />
+ <img src="https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/screenshots/Screenshot_20210425-194411_r.png" width="300px" alt="Plugin screenshot" />
   
  <img src="https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/screenshots/Screenshot_20210425-185058_r.png" width="300px" alt="Telegram screenshot" />
 </p>
