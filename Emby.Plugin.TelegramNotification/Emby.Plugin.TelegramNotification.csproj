@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 <PropertyGroup> 
-  <TargetFrameworks>netstandard2.0;</TargetFrameworks> 
-  <AssemblyVersion>1.1.0.0</AssemblyVersion> 
-  <FileVersion>1.1.0.0</FileVersion> 
+  <TargetFrameworks>netstandard2.1;</TargetFrameworks> 
+  <AssemblyVersion>2.0.0.0</AssemblyVersion> 
+  <FileVersion>2.0.0.0</FileVersion> 
 </PropertyGroup>
 
 <ItemGroup>
@@ -16,7 +16,7 @@
   <EmbeddedResource Include="thumb.png" />
 </ItemGroup>
 
-<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" /> </ItemGroup>
+<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.5.0.28" /> <PackageReference Include="Microsoft.CSharp" Version="4.7.0" /> <PackageReference Include="System.Text.Json" Version="5.0.0" /> </ItemGroup>
 
 <ItemGroup>
   <Folder Include="Images\" />
