@@ -1,6 +1,6 @@
 
 
-# TelegramNotification FilmAffinity Edition™ 
+<h1 align="center"> TelegramNotification FilmAffinity Edition™ </h1>
 <p align="center">
   <img src="https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/Emby.Plugin.TelegramNotification/thumb.png" width="300px" alt="Telegram plugin" />
 </p>
