@@ -1,16 +1,46 @@
-# Emby.Plugin.TelegramNotification
 
-Emby Server Plugin for sending notifications to a Telegram bot.
 
-## Install
-1. Install the Plugin by downloading the DLL (or build it yourself using VS2019) and putting it into your Emby Plugin folder
-2. Restart your Emby Server
-3. Talk to @Bodfather with your favorite Telegram Client to create your Telegram Bot
-4. Start a chat with your bot (or place it in a channel) and send a message to it
-5. Fire up your browser and type the following URL: `https://api.telegram.org/bot<BotTokenGoesHere>/getUpdates` 
-   (without the braces) and find the ChatID 
-6. Use the Settings Page of the Plugin to set Bot Token and Chat ID
-7. Activate the Telegram Notifications Plugin in the desired Server notifications
+# TelegramNotification FilmAffinity Edition™ 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/Emby.Plugin.TelegramNotification/thumb.png" width="300px" alt="Telegram plugin" />
+</p>
 
-Based on the raw Telegram Plugin of an unknown Author, spiced up with pieces of the Slack Notification Author and much googleling.
-Please test it as much as you can. 
+## Fork of the popular emby plugin [TelegramNotification](https://github.com/bjoerns1983/Emby.Plugin.TelegramNotification)
+- Stay safe using updated dependencies.
+
+- Notify your users about new content with the [best movie ratings website ever created.](https://www.filmaffinity.com/)
+
+- Your users will know at a glance whether a movie is good or bad thanks to the accuracy of FilmAffinity ratings.
+
+## Screenshots
+Plugin config + Telegram notification examples
+<p align="left">
+  <img src=" https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/screenshots/Screenshot_20210425-194411_r.png" width="300px" alt="Plugin screenshot" />
+  
+ <img src="https://raw.githubusercontent.com/rafagale/Emby.Plugin.TelegramNotification/master/screenshots/Screenshot_20210425-185058_r.png" width="300px" alt="Telegram screenshot" />
+</p>
+
+## Requirements
+- An instance of [Emby Server](https://emby.media/download.html) using spanish language running.
+- An instance of [this FilmAffinity API](#) running on port 5000 in the same server as Emby.
+
+
+## Installation
+
+Place the dll in your emby plugin directory
+
+```sh
+cp /home/user/Download/Emby.Plugin.TelegramNotification.dll /var/lib/emby/plugins/Emby.Plugin.TelegramNotification.dll
+```
+
+Restart your server
+
+```sh
+sudo service emby-server restart
+```
+
+Use the settings page of the Plugin to set your bot token and your chat id (See [screenshot](https://github.com/rafagale/Emby.Plugin.TelegramNotification/blob/master/screenshots/Screenshot_20210425-194411_r.png?raw=true))
+
+Activate the Telegram Notifications Plugin in the desired server notifications.
+
+

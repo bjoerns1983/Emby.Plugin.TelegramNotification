@@ -24,6 +24,10 @@
                         <input is="emby-checkbox" type="checkbox" id="chkSendDescriptionTeleGram" />
                         <span>Send Descriptions (needed for Playback Reporting Plugin)</span>
                     </label>
+					<label class="checkboxContainer">
+                        <input is="emby-checkbox" type="checkbox" id="chkEnableFA" />
+                        <span>Include FilmAffinity rating in the description</span>
+                    </label>
                     <div class="inputContainer">
                         <input is="emby-input" type="text" id="txtTeleGramBotKey" label="Telegram bot token:" required="required" />
                         <div class="fieldDescription">
@@ -70,6 +74,7 @@
 
 						page.querySelector('#chkEnableTeleGram').checked = teleGramConfig.Enabled || false;
                         page.querySelector('#chkSendDescriptionTeleGram').checked = teleGramConfig.SendDescription || false;
+                        page.querySelector('#chkEnableFA').checked = teleGramConfig.FilmAffinityRating || false;
 						$('#txtTeleGramBotKey', page).val(teleGramConfig.BotToken || '');
                         $('#txtTeleGramChatID', page).val(teleGramConfig.ChatID || '');
 
@@ -163,6 +168,7 @@
 
                         teleGramConfig.Enabled = form.querySelector('#chkEnableTeleGram').checked;
 						teleGramConfig.SendDescription = form.querySelector('#chkSendDescriptionTeleGram').checked;
+						teleGramConfig.FilmAffinityRating = form.querySelector('#chkEnableFA').checked;
 						teleGramConfig.BotToken = $('#txtTeleGramBotKey', form).val();
                         teleGramConfig.ChatID = $('#txtTeleGramChatID', form).val();
 

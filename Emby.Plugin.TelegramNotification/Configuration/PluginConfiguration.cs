@@ -23,12 +23,11 @@ namespace Emby.Plugin.TelegramNotification.Configuration
         public String ChatID { get; set; }
         public String BotToken { get; set; }
         public Boolean SendDescription { get; set; }
+        public Boolean FilmAffinityRating { get; set; }
         public String DeviceName { get; set; }
         public int Priority { get; set; }
         public string MediaBrowserUserId { get; set; }
 
-
     }
-
 
 }

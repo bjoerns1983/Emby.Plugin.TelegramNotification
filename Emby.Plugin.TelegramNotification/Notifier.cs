@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MediaBrowser.Common.Net;
+﻿using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Notifications;
 using MediaBrowser.Model.Logging;
@@ -8,6 +7,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Emby.Plugin.TelegramNotification
 {
@@ -46,12 +47,46 @@ namespace Emby.Plugin.TelegramNotification
             var options = GetOptions(request.User);
             string message = Uri.EscapeDataString(request.Name);
 
-            if (string.IsNullOrEmpty(request.Description) == false && options.SendDescription == true)
+            if (!string.IsNullOrEmpty(request.Description) && options.SendDescription)
             {
-                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description); 
+                string filmAffinityInfo = "";
+
+                if (options.FilmAffinityRating)
+                {
+                    try
+                    {
+                        string title = request.Name.ToLower().Split("ha sido agregado")[0].Trim().Replace(" ", "+");
+                        var url = "http://localhost:5000/api/title/" + title;
+
+                        using var client = new HttpClient();
+                        client.BaseAddress = new Uri(url);
+
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        string strResult = await response.Content.ReadAsStringAsync();
+
+                        using JsonDocument doc = JsonDocument.Parse(strResult);
+                        JsonElement root = doc.RootElement;
+
+                        var filmRating = root.GetProperty("rating");
+                        var filmTitle = root.GetProperty("title");
+                        var filmId = root.GetProperty("id");
+
+                        if (filmRating.ToString().Any(char.IsDigit))
+                        {
+                            filmAffinityInfo = "\n\nFilmAffinity: " + filmRating + "/10";
+                        }
+                        _logger.Info("FilmAffinity film : {0} - {1} - {2}", filmId, filmTitle, filmRating);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error("Error retrieving FilmAffinity rating", e);
+                    }
+                }
+
+                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description + filmAffinityInfo); 
             }
 
-            _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
+            _logger.Info("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
 
             var _httpRequest = new HttpRequestOptions
             {
