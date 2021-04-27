@@ -22,7 +22,7 @@ Plugin config + Telegram notification examples
 
 ## Requirements
 - An instance of [Emby Server](https://emby.media/download.html) using spanish language.
-- An instance of [this unofficial FilmAffinity API](#) running on port 5000 in the same server as Emby.
+- [This unofficial FilmAffinity API](#) running on port 5000 in the same server as Emby.
 
 
 ## Installation
