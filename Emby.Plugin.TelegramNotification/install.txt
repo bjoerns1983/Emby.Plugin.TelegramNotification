@@ -1,0 +1,1 @@
+include provided System.Text.Json.dll (5.0.0) in system eg: /opt/emby-server/system/
