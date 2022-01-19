@@ -47,6 +47,7 @@ namespace Emby.Plugin.TelegramNotification.Api
 
             _logger.Debug("Telegram <TEST> to {0} - {1}", options.BotToken, options.ChatID);
 
+
             var httpRequestOptions = new HttpRequestOptions
             {
                 Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + message,

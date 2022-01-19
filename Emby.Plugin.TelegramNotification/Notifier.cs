@@ -44,25 +44,49 @@ namespace Emby.Plugin.TelegramNotification
         {
 
             var options = GetOptions(request.User);
-            string message = Uri.EscapeDataString(request.Name);
+            string message = (request.Name);
 
             if (string.IsNullOrEmpty(request.Description) == false && options.SendDescription == true)
             {
-                message = Uri.EscapeDataString(request.Name + "\n\n" + request.Description); 
+                message = (request.Name + "\n\n" + request.Description); 
             }
 
             _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
 
-            var _httpRequest = new HttpRequestOptions
-            {
-                Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + message,
-                CancellationToken = cancellationToken
-            };
 
-            using (await _httpClient.Post(_httpRequest).ConfigureAwait(false))
+            if (message.Length > 4096)
             {
+                int chunkSize = 4096;
+                int messageLenght = message.Length;
+                for (int i = 0; i < messageLenght; i += chunkSize)
+                {
+                    if (i + chunkSize > messageLenght) chunkSize = messageLenght - i;
+                    string TelegramMessage = Uri.EscapeDataString(message.Substring(i, chunkSize));
+                    var httpRequestOptions = new HttpRequestOptions
+                    {
+                        Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + TelegramMessage,
+                        CancellationToken = CancellationToken.None
+                    };
+                    using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
+                    {
 
+                    }
+                }
             }
+            else
+            {
+                string TelegramMessage = Uri.EscapeDataString(message);
+                var httpRequestOptions = new HttpRequestOptions
+                {
+                    Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + TelegramMessage,
+                    CancellationToken = CancellationToken.None
+                };
+                using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
+                {
+
+                }
+            }
+
         }
 
         private bool IsValid(TeleGramOptions options)
