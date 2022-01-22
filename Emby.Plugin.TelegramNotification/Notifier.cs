@@ -81,6 +81,7 @@ namespace Emby.Plugin.TelegramNotification
                     Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + TelegramMessage,
                     CancellationToken = CancellationToken.None
                 };
+                
                 using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
                 {
 
