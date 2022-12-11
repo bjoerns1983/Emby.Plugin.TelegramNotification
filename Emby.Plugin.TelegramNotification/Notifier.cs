@@ -3,56 +3,49 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Notifications;
 using MediaBrowser.Model.Logging;
-using Emby.Plugin.TelegramNotification.Configuration;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Emby.Notifications;
+using MediaBrowser.Controller;
 
 namespace Emby.Plugin.TelegramNotification
 {
-    public class Notifier : INotificationService
+    public class Notifier : IUserNotifier
     {
-        private readonly ILogger _logger;
-        private readonly IHttpClient _httpClient;
+        private ILogger _logger;
+        private IServerApplicationHost _appHost;
+        private IHttpClient _httpClient;
 
-        public Notifier(ILogManager logManager, IHttpClient httpClient)
+        public Notifier(ILogger logger, IServerApplicationHost applicationHost, IHttpClient httpClient)
         {
-            _logger = logManager.GetLogger(GetType().Name);
+            _logger = logger;
+            _appHost = applicationHost;
             _httpClient = httpClient;
         }
 
-        public bool IsEnabledForUser(User user)
+        private Plugin Plugin => _appHost.Plugins.OfType<Plugin>().First();
+
+        public string Name => Plugin.StaticName;
+
+        public string Key => "telegramnotifications";
+
+        public string SetupModuleUrl => Plugin.NotificationSetupModuleUrl;
+
+        public async Task SendNotification(InternalNotificationRequest request, CancellationToken cancellationToken)
         {
-            var options = GetOptions(user);
+            var options = request.Configuration.Options;
 
-            return options != null && IsValid(options) && options.Enabled;
-        }
+            options.TryGetValue("BotToken", out string botToken);
+            options.TryGetValue("ChatID", out string chatID);
 
-        private TeleGramOptions GetOptions(User user)
-        {
-            return Plugin.Instance.Configuration.Options
-                .FirstOrDefault(i => string.Equals(i.MediaBrowserUserId, user.Id.ToString("N"), StringComparison.OrdinalIgnoreCase));
-        }
+            string message = (request.Title);
 
-        public string Name
-        {
-            get { return Plugin.Instance.Name; }
-        }
-
-        public async Task SendNotification(UserNotification request, CancellationToken cancellationToken)
-        {
-
-            var options = GetOptions(request.User);
-            string message = (request.Name);
-
-            if (string.IsNullOrEmpty(request.Description) == false && options.SendDescription == true)
+            if (string.IsNullOrEmpty(request.Description) == false)
             {
-                message = (request.Name + "\n\n" + request.Description); 
+                message = (request.Title + "\n\n" + request.Description); 
             }
-
-            _logger.Debug("TeleGram to Token : {0} - {1} - {2}", options.BotToken, options.ChatID, request.Name);
-
 
             if (message.Length > 4096)
             {
@@ -64,8 +57,8 @@ namespace Emby.Plugin.TelegramNotification
                     string TelegramMessage = Uri.EscapeDataString(message.Substring(i, chunkSize));
                     var httpRequestOptions = new HttpRequestOptions
                     {
-                        Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + TelegramMessage,
-                        CancellationToken = CancellationToken.None
+                        Url = "https://api.telegram.org/bot" + botToken + "/sendmessage?chat_id=" + chatID + "&text=" + TelegramMessage,
+                        CancellationToken = cancellationToken
                     };
                     using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
                     {
@@ -78,8 +71,8 @@ namespace Emby.Plugin.TelegramNotification
                 string TelegramMessage = Uri.EscapeDataString(message);
                 var httpRequestOptions = new HttpRequestOptions
                 {
-                    Url = "https://api.telegram.org/bot" + options.BotToken + "/sendmessage?chat_id=" + options.ChatID + "&text=" + TelegramMessage,
-                    CancellationToken = CancellationToken.None
+                    Url = "https://api.telegram.org/bot" + botToken + "/sendmessage?chat_id=" + chatID + "&text=" + TelegramMessage,
+                    CancellationToken = cancellationToken
                 };
                 
                 using (await _httpClient.Post(httpRequestOptions).ConfigureAwait(false))
@@ -87,13 +80,6 @@ namespace Emby.Plugin.TelegramNotification
 
                 }
             }
-
-        }
-
-        private bool IsValid(TeleGramOptions options)
-        {
-            return !string.IsNullOrEmpty(options.ChatID) &&
-                !string.IsNullOrEmpty(options.BotToken);
         }
     }
 }
