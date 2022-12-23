@@ -7,19 +7,25 @@
 </PropertyGroup>
 
 <ItemGroup>
+  <Compile Remove="Images\**" />
+  <EmbeddedResource Remove="Images\**" />
+  <None Remove="Images\**" />
+</ItemGroup>
+
+<ItemGroup>
   <None Remove="Configuration\config.html" />
+  <None Remove="Configuration\entryeditor.js" />
+  <None Remove="Configuration\entryeditor.template.html" />
   <None Remove="thumb.png" />
 </ItemGroup>
 
 <ItemGroup>
   <EmbeddedResource Include="Configuration\config.html" />
+  <EmbeddedResource Include="Configuration\entryeditor.js" />
+  <EmbeddedResource Include="Configuration\entryeditor.template.html" />
   <EmbeddedResource Include="thumb.png" />
 </ItemGroup>
 
-<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" /> </ItemGroup>
-
-<ItemGroup>
-  <Folder Include="Images\" />
-</ItemGroup>
+<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="4.8.0.20-beta12" /> </ItemGroup>
 
 </Project>

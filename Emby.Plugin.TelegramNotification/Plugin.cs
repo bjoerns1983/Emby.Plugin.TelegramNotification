@@ -4,7 +4,6 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
-using Emby.Plugin.TelegramNotification.Configuration;
 using System.IO;
 using MediaBrowser.Model.Drawing;
 
@@ -13,19 +12,9 @@ namespace Emby.Plugin.TelegramNotification
     /// <summary>
     /// Class Plugin
     /// </summary>
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage
+    public class Plugin : BasePlugin, IHasWebPages, IHasThumbImage
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
-            : base(applicationPaths, xmlSerializer)
-        {
-            Instance = this;
-        }
-
-        private Guid _id = new Guid("890ACB04-34A2-4CDB-8D89-4EA2FE90B0D7");
-        public override Guid Id
-        {
-            get { return _id; }
-        }
+        private const string EditorJsName = "telegramnotificationeditorjs";
 
         public IEnumerable<PluginPageInfo> GetPages()
         {
@@ -33,11 +22,27 @@ namespace Emby.Plugin.TelegramNotification
             {
                 new PluginPageInfo
                 {
-                    Name = Name,
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.config.html"
+                    Name = EditorJsName,
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.entryeditor.js"
+                },
+                new PluginPageInfo
+                {
+                    Name = "telegrameditortemplate",
+                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.entryeditor.template.html",
+                    IsMainConfigPage = false
                 }
             };
         }
+
+        public string NotificationSetupModuleUrl => GetPluginPageUrl(EditorJsName);
+
+        private Guid _id = new Guid("890ACB04-34A2-4CDB-8D89-4EA2FE90B0D7");
+        public override Guid Id
+        {
+            get { return _id; }
+        }
+
+        public static string StaticName = "Telegram";
 
         /// <summary>
         /// Gets the name of the plugin
@@ -45,7 +50,7 @@ namespace Emby.Plugin.TelegramNotification
         /// <value>The name.</value>
         public override string Name
         {
-            get { return "Telegram Notifications"; }
+            get { return StaticName + " Notifications"; }
         }
 
         /// <summary>
@@ -73,11 +78,5 @@ namespace Emby.Plugin.TelegramNotification
                 return ImageFormat.Png;
             }
         }
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>The instance.</value>
-        public static Plugin Instance { get; private set; }
     }
 }
