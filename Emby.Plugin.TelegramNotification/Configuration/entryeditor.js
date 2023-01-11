@@ -7,15 +7,15 @@
     EntryEditor.setObjectValues = function (context, entry) {
 
         entry.FriendlyName = context.querySelector('.txtFriendlyName').value;
-        entry.Options.Token = context.querySelector('.BotToken').value;
-        entry.Options.Token = context.querySelector('.ChatID').value;
+        entry.Options.BotToken = context.querySelector('.txtTeleGramBotKey').value;
+        entry.Options.ChatID = context.querySelector('.txtTeleGramChatID').value;
     };
 
     EntryEditor.setFormValues = function (context, entry) {
 
         context.querySelector('.txtFriendlyName').value = entry.FriendlyName || '';
-        context.querySelector('.BotToken').value = entry.Options.Token || '';
-        context.querySelector('.ChatID').value = entry.Options.Token || '';
+        context.querySelector('.txtTeleGramBotKey').value = entry.Options.BotToken || '';
+        context.querySelector('.txtTeleGramChatID').value = entry.Options.ChatID || '';
     };
 
     EntryEditor.loadTemplate = function (context) {
