@@ -9,7 +9,7 @@
         entry.FriendlyName = context.querySelector('.txtFriendlyName').value;
         entry.Options.BotToken = context.querySelector('.txtTeleGramBotKey').value;
         entry.Options.ChatID = context.querySelector('.txtTeleGramChatID').value;
-        entry.Options.DisableDescription = context.querySelector('.chkDisableDescription').checked;
+        entry.Options.DisableDescription = '' + context.querySelector('.chkDisableDescription').checked;
     };
 
     EntryEditor.setFormValues = function (context, entry) {
@@ -17,7 +17,7 @@
         context.querySelector('.txtFriendlyName').value = entry.FriendlyName || '';
         context.querySelector('.txtTeleGramBotKey').value = entry.Options.BotToken || '';
         context.querySelector('.txtTeleGramChatID').value = entry.Options.ChatID || '';
-        context.querySelector('.chkDisableDescription').checked = entry.Options.DisableDescription || false;
+        context.querySelector('.chkDisableDescription').checked = entry.Options.DisableDescription == "true" || false;
     };
 
     EntryEditor.loadTemplate = function (context) {
