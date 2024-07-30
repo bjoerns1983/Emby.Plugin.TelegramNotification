@@ -39,10 +39,11 @@ namespace Emby.Plugin.TelegramNotification
 
             options.TryGetValue("BotToken", out string botToken);
             options.TryGetValue("ChatID", out string chatID);
+            options.TryGetValue("DisableDescription", out string disableDescription);
 
             string message = (request.Title);
 
-            if (string.IsNullOrEmpty(request.Description) == false)
+            if (string.IsNullOrEmpty(request.Description) == false && disableDescription != "true")
             {
                 message = (request.Title + "\n\n" + request.Description); 
             }
