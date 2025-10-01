@@ -1,5 +1,7 @@
 # Emby.Plugin.TelegramNotification
 
+Moved to: https://codeberg.org/bjoerns1983/Emby.Plugin.TelegramNotification/
+
 Emby Server Plugin for sending notifications to a Telegram bot.
 For Emby Server Version up and including 4.7 use Version 1.2 of the Plugin.
 For Emby Server Version 4.8.20 and up use Version 1.3.1 of the Plugin.
